@@ -17,7 +17,6 @@ li{list-style: none;}
 .line>li:hover{background: #ccc;}
 .line>li.hidden:hover>.before{background: #ccc; border-color: #eee;}
 .line>li.flag:hover>.before{background: #f55; border-color: #eee;}
-/* .line>li:active>.before{display: none;} */
 
 #playTime{position: absolute; left: 0; top: -40%; width: 100%; text-align: center;}
 #playTime.fail{color: #f33;}
@@ -31,7 +30,7 @@ input{width: 80px; height: 20px; border: 1px solid #777; box-sizing: content-box
 #input .menuDown{display: block;}
 #input .menuUp{display: none;}
 
-#toggleMenu:checked ~ #gamePlace #input{bottom: -125px;}
+#toggleMenu:checked ~ #gamePlace #input{bottom: -135px;}
 #toggleMenu:checked ~ #gamePlace #input .menuDown{display: none;}
 #toggleMenu:checked ~ #gamePlace #input .menuUp{display: block;}
 #toggleMenu:checked ~ #gamePlace #playTime{pointer-events: none;}
@@ -39,7 +38,15 @@ input{width: 80px; height: 20px; border: 1px solid #777; box-sizing: content-box
 input[type="checkbox"]{display:none;}
 #toggleFlagButton{position: absolute; width: 34px; height: 34px; background: #eee; border-radius: 8px; border: 2px solid #555; right: 5px; top: 5px; cursor: pointer;}
 #toggleFlagButton::before{content: ""; display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: #f33;}
-#toggleMenuButton{position: absolute; width: 100%; height: 20px; bottom: 100%; left: -2px; border-radius: 20px 20px 0 0; border: 2px solid #555; border-bottom: 0; background: #888; font-size: 30px; line-height: 16px; text-align: center; color: #fff; cursor: pointer;}
+#toggleMenuButton{position: absolute; width: 100%; height: 20px; bottom: 100%; left: -2px; border-radius: 20px 20px 0 0; border: 2px solid #555; border-bottom: 0; background: #888; font-size: 30px; line-height: 16px; text-align: center; color: #fff; cursor: pointer; user-select: none;}
+
 
 #toggleFlag:checked ~ #gamePlace #toggleFlagButton{background: #aaa; box-shadow: inset 0 0 3px #222;}
 #toggleFlag:checked ~ #gamePlace #toggleFlagButton:before{background: #d00;}
+#toggleHelp:checked ~ #helpMenu{display: block;}
+
+#help{position: absolute; left: 5px; top: 5px; width: 34px; height: 34px; line-height: 34px; font-size: 24px; background: none; border-color: #0000; cursor: pointer; text-align: center; user-select: none;}
+#helpMenu{display: none; width: 70vw; height: auto; max-height: 80vh; position: absolute; background: #bbb; border-radius: 10px; border: 2px solid #666; box-sizing: border-box; padding: 50px; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 20px; overflow-Y: auto; display: none;}
+#helpMenu::-webkit-scrollbar{display: none;}
+#helpMenu h1{margin-bottom: 30px;}
+#helpMenu p{margin-top: 40px; line-height: 33px;}

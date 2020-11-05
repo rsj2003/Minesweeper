@@ -8,6 +8,7 @@
 <body>
   <input type="checkbox" name="toggleFlag" id="toggleFlag">
   <input type="checkbox" name="toggleMenu" id="toggleMenu">
+  <input type="checkbox" name="toggleHelp" id="toggleHelp">
   <div id="gamePlace">
     <ul id="game">
     </ul>
@@ -17,10 +18,21 @@
       <input type="number" value="5" placeholder="줄 갯수" id="lineCount" name="lineCount" min="5" max="30">
       <input type="number" value="1" placeholder="난이도" id="difficulty" name="difficulty" min="1" max="10">
       <input type="button" value="다시시작" id="reset" name="reset">
+      <label for="toggleHelp" id="help">?</label>
       <label for="toggleFlag" id="toggleFlagButton"></label>
       <label for="toggleMenu" id="toggleMenuButton"><span class="menuDown">&dtrif;</span><span class="menuUp">&utrif;</span></label>
     </div>
   </div>
+  <label for="toggleHelp" id="helpMenu">
+    <h1>도움말</h1>
+    <p>기본적으로 회색 칸을 클릭하는 식으로 게임을 진행할 수 있습니다.</p>
+    <p>좌클릭으로 가려져있는 칸을 열고 우클릭으로 지뢰 위치를 표시합니다.</p>
+    <p>지뢰가 있는 칸을 클릭할 겨우 게임을 실패하게 되고 지뢰가 없는 모든 칸을 열고 모든 지뢰를 표시하면 게임을 성공하게 됩니다.</p>
+    <p>하단 메뉴에 있는 숫자입력칸중 왼쪽칸은 게임 판의 크기, 오른쪽칸은 게임의 난이도를 설정합니다.</p>
+    <p>하단 메뉴에 오른쪽 위쪽에 있는 버튼은 좌클릭과 우클릭 기능이 전환됩니다.</p>
+    <p>게임에 실패할 경우 이어할수는 있으나 타이머색이 빨간색으로 되며 멈춥니다.</p>
+    <p>도움말 창을 클릭하면 창이 사라집니다.</p>
+  </label>
   <script src="src/js/script.js"></script>
 </body>
 </html>

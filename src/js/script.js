@@ -26,48 +26,74 @@ window.onload = function() {
 
   $reset.addEventListener("click", reset);
 
-  document.addEventListener("keydown", e => {
-    if(e.key === "h") {
-      $li.forEach((e, i) => {
-        if(mineList[i] === 0) {
-          if(warningList[i] > 0) e.querySelector(".warningCount").innerHTML = warningList[i];
-          flagList[i] = 0;
-          $li[i].classList.remove("flag");
-          e.classList.remove("hidden");
-        }
-      })
-      $mineLength.innerHTML = arrayCount(flagList, 1);
-      finishTest();
-      if(firstClick === true) {
-        setTimer();
-        firstClick = false;
-      }
-    }
-    if(e.key === "m") {
-      mineList.forEach((e, i) => {
-        if(e === 1) {
-          flagList[i] = 1;
-          $li[i].classList.add("flag");
-        }
-      });
-      $mineLength.innerHTML = arrayCount(flagList, 1);
-      finishTest();
-      if(firstClick === true) {
-        setTimer();
-        firstClick = false;
-      }
-    }
-  })
+  // document.addEventListener("keydown", e => {
+  //   if(e.key === "h") {
+  //     $li.forEach((e, i) => {
+  //       if(mineList[i] === 0) {
+  //         if(warningList[i] > 0) e.querySelector(".warningCount").innerHTML = warningList[i];
+  //         flagList[i] = 0;
+  //         $li[i].classList.remove("flag");
+  //         e.classList.remove("hidden");
+  //       };
+  //     });
+  //     $mineLength.innerHTML = arrayCount(flagList, 1);
+  //     finishTest();
+  //     if(firstClick === true) {
+  //       setTimer();
+  //       firstClick = false;
+  //     };
+  //   };
+  //   if(e.key === "m") {
+  //     mineList.forEach((e, i) => {
+  //       if(e === 1) {
+  //         flagList[i] = 1;
+  //         $li[i].classList.add("flag");
+  //       };
+  //     });
+  //     $mineLength.innerHTML = arrayCount(flagList, 1);
+  //     finishTest();
+  //     if(firstClick === true) {
+  //       setTimer();
+  //       firstClick = false;
+  //     };
+  //   };
+  // });
 
   function liCickEvent() {
     $li.forEach((l,i) => {
       l.addEventListener("mousedown", e => {
         if(finish) return false;
         if(e.button === 0) {
-          if(!$toggleFlag.checked){
+          if($toggleFlag.checked){
+            if(hasClass(e.target, "hidden")) {
+              e.target.classList.toggle("flag");
+              if(hasClass(e.target, "flag")) {
+                flagList[i] = 1;
+              }else {
+                flagList[i] = 0;
+              };
+            };
+            $mineLength.innerHTML = arrayCount(flagList, 1); 
+          }else {
             if(flagList[i] === 1) return false;
             if(firstClick === true) {
               moveMine(i)
+              firstClick = false;
+              setTimer();
+            };
+            if(mineList[i] === 1) {
+              if(confirm("다시 시작하시겠습니까?") === true) return reset();
+              clearInterval(timerInterval);
+              $playTime.classList.add("fail");
+            };
+            deleteHidden(i);
+          };
+        };
+        if(e.button === 2) {
+          if($toggleFlag.checked){
+            if(flagList[i] === 1) return false;
+            if(firstClick === true) {
+              moveMine(i);
               firstClick = false;
               setTimer();
             };
@@ -84,24 +110,13 @@ window.onload = function() {
                 flagList[i] = 1;
               }else {
                 flagList[i] = 0;
-              }
-            }
+              };
+            };
             $mineLength.innerHTML = arrayCount(flagList, 1);
-          }
-        }
-        if(e.button === 2) {
-          if(hasClass(e.target, "hidden")) {
-            e.target.classList.toggle("flag");
-            if(hasClass(e.target, "flag")) {
-              flagList[i] = 1;
-            }else {
-              flagList[i] = 0;
-            }
-          }
-          $mineLength.innerHTML = arrayCount(flagList, 1);
-        }
+          };
+        };
         finishTest();
-      })
+      });
       l.addEventListener("dblclick", e => {
         if((i + 1) % lineCount !== 0) {
           liDblclick(i - lineCount + 1);
@@ -112,11 +127,11 @@ window.onload = function() {
           liDblclick(i - lineCount - 1);
           liDblclick(i - 1);
           liDblclick(i + lineCount - 1);
-        }
+        };
         liDblclick(i - lineCount);
         liDblclick(i + lineCount);
         liDblclick(i);
-      })
+      });
     }); 
     for(let i = 0; i < ($li.length / (15 - difficulty)) + difficulty; i++) {
       let idx = Math.floor(Math.random() * $li.length);
@@ -141,7 +156,7 @@ window.onload = function() {
     if(warningList[i] > 0) {
       $li[i].querySelector(".warningCount").innerHTML = `${warningList[i]}`;
       return false;
-    }
+    };
     if((i + 1) % lineCount !== 0) {
       deleteHidden(i - lineCount + 1);
       deleteHidden(i + 1);
@@ -151,10 +166,10 @@ window.onload = function() {
       deleteHidden(i - lineCount - 1);
       deleteHidden(i - 1);
       deleteHidden(i + lineCount - 1);
-    }
+    };
     deleteHidden(i - lineCount);
     deleteHidden(i + lineCount);
-  }
+  };
 
   function pushWarning(i) {
     if((i + 1) % lineCount !== 0) {
@@ -166,10 +181,10 @@ window.onload = function() {
       setWarning(i - lineCount - 1);
       setWarning(i - 1);
       setWarning(i + lineCount - 1);
-    }
+    };
     setWarning(i - lineCount);
     setWarning(i + lineCount);
-  }
+  };
 
   function splitWarning(i) {
     if((i + 1) % lineCount !== 0) {
@@ -181,10 +196,10 @@ window.onload = function() {
       removeWarning(i - lineCount - 1);
       removeWarning(i - 1);
       removeWarning(i + lineCount - 1);
-    }
+    };
     removeWarning(i - lineCount);
     removeWarning(i + lineCount);
-  }
+  };
 
   function moveMine(i) {
     let around = new Array();
@@ -199,10 +214,10 @@ window.onload = function() {
         around.push(i - lineCount - 1);
         around.push(i - 1);
         around.push(i + lineCount - 1);
-      }
+      };
     }else {
       around = [i];
-    }
+    };
     around.forEach(l => {
       if(l >= 0 && l < lineCount * lineCount) {
         if(mineList[l] === 1) {
@@ -215,22 +230,22 @@ window.onload = function() {
               mineList[idx] = 1;
               pushWarning(idx);
               clear = false;
-            }
-          }
-        }
-      }
-    })
-  }
+            };
+          };
+        };
+      };
+    });
+  };
 
   function setWarning(i) {
     if(i < 0 || i >= lineCount * lineCount) return false;
     warningList[i]++;
-  }
+  };
 
   function removeWarning(i) {
     if(i < 0 || i >= lineCount * lineCount) return false;
     warningList[i]--;
-  }
+  };
 
   function liDblclick(i) {
     if(i < 0 || i >= lineCount * lineCount) return false;
@@ -238,7 +253,7 @@ window.onload = function() {
     setTimeout(e => {
       $li[i].classList.remove("highlight");
     },0);
-  }
+  };
 
   function reset() {
     let html = "";
@@ -251,11 +266,11 @@ window.onload = function() {
     if(lineCount > 30) {
       lineCount = 30;
       $lineCount.value = 30;
-    }
+    };
     if(difficulty > 10) {
       difficulty = 10;
       $difficulty.value = 10;
-    }
+    };
     let line = `<li><ul class="line">`;
     for(let i = 0; i < lineCount; i++) {
       line += `<li class="hidden"><span class="warningCount"></span><span class="before"></span><span class="after"></span></li>`;
@@ -278,33 +293,33 @@ window.onload = function() {
     $game.style.height = `${(lineCount * 31) + 1}px`;
     clearInterval(timerInterval);
     liCickEvent();
-  }
+  };
 
   function finishTest() {
     finish = true;
     for(let i = 0; i < mineList.length; i++) {
       if(mineList[i] !== flagList[i]) return finish = false;
       if(mineList[i] === 0 && hasClass($li[i], "hidden")) return finish = false;
-    }
+    };
     if(finish) {
       clearInterval(timerInterval);
       alert("성공");
-    }
-  }
+    };
+  };
 
   function setTimer() {
     timer = 0;
     timerInterval = setInterval(e => {
       timer++;
       $playTime.innerHTML = `${fillZero(Math.floor(timer / 60), 2)} : ${fillZero(timer % 60, 2)}`;
-    },1000)
-  };https://rsj2003.github.io/Minesweeper/
+    },1000);
+  };
 
   
   function fillZero(n, width) {
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
-}
+  };
 
   function hasClass(element, className) {
     return element.classList.contains(className);
@@ -314,7 +329,7 @@ window.onload = function() {
     let idx = 0;
     for(let i = 0; i < arr.length; i++) {
       if(arr[i] === str) idx++;
-    }
+    };
     return idx;
-  }
+  };
 };
