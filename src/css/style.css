@@ -1,0 +1,30 @@
+*{margin: 0; padding: 0;}
+li{list-style: none;}
+
+#gamePlace{width: 80vw; height: 80vh; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+#game{position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%);}
+.line{height: 31px;}
+.line>li{width: 30px; height: 30px; background: #bbb; float: left; border-right: 1px solid #777; border-bottom: 1px solid #777; position: relative; cursor: pointer; text-align: center; line-height: 30px; user-select: none;}
+.line>li>.warningNumber{display: block; position: absolute; width: 30px; height: 30px; left: 0; top: 0; pointer-events: none;}
+.line>li.hidden>.before{display: block; position: absolute; width: 20px; height: 20px; border: 5px outset #ddd; background: #bbb; left: 0; top: 0; z-index: 5; pointer-events: none;}
+.line>li>.after{display: block; position: absolute; width: 30px; height: 30px; background: #fff7; left: 0; top: 0; z-index: 5; opacity: 0; transition: 0.5s; pointer-events: none;}
+.line>li.highlight>.after{opacity: 1; transition: none;}
+#game>li:nth-of-type(1)>.line{height: 32px;}
+#game>li:nth-of-type(1)>.line>li{border-top: 1px solid #777;}
+.line>li:nth-of-type(1){border-left: 1px solid #777;}
+.line>li.flag>.before{background: #f33;}
+
+.line>li:hover{background: #ccc;}
+.line>li.hidden:hover>.before{background: #ccc; border-color: #eee;}
+.line>li.flag:hover>.before{background: #f55; border-color: #eee;}
+/* .line>li:active>.before{display: none;} */
+
+#playTime{position: absolute; left: 50%; top: 90%; transform: translate(-50%, -200%);}
+#playTime.fail{color: #f33;}
+
+#mineCount{position: absolute; left: 50%; top: 90%; transform: translate(-50%, -50%);}
+.mineIcon{width: 20px; height: 20px; margin-left: 40px; display: inline-block; background: #f33; transform: translateY(5px);}
+
+#input{position: absolute; left: 50%; top: 95%; transform: translate(-50%, -50%);}
+input{width: 60px; height: 20px; border: 1px solid #777; box-sizing: content-box; padding: 5px; border-radius: 3px;}
+#reset{cursor: pointer;}
