@@ -26,7 +26,6 @@ window.onload = function() {
   $reset.addEventListener("click", reset);
 
   document.addEventListener("keydown", e => {
-    console.log(e.key);
     if(e.key === "h") {
       $li.forEach((e, i) => {
         if(mineList[i] === 0) {
@@ -47,7 +46,6 @@ window.onload = function() {
           $li[i].classList.add("flag");
         }
       });
-      console.log(mineList, flagList);
       $mineLength.innerHTML = arrayCount(flagList, 1);
       finishTest();
       firstClick = false;
@@ -56,7 +54,6 @@ window.onload = function() {
 
   function liCickEvent() {
     $li.forEach((l,i) => {
-      // l.classList.add("hidden");
       l.addEventListener("mousedown", e => {
         if(finish) return false;
         if(e.button === 0) {
@@ -84,7 +81,6 @@ window.onload = function() {
           }
           $mineLength.innerHTML = arrayCount(flagList, 1);
         }
-        console.log("test");
         finishTest();
       })
       l.addEventListener("dblclick", e => {
@@ -192,7 +188,6 @@ window.onload = function() {
       if(l >= 0 && l < lineCount * lineCount) {
         if(mineList[l] === 1) {
           mineList[l] = 0;
-          console.log(mineList[l]);
           splitWarning(l);
           let clear = true;
           while(clear) {
