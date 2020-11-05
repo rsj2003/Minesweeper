@@ -37,7 +37,10 @@ window.onload = function() {
       })
       $mineLength.innerHTML = arrayCount(flagList, 1);
       finishTest();
-      firstClick = false;
+      if(firstClick === true) {
+        setTimer();
+        firstClick = false;
+      }
     }
     if(e.key === "m") {
       mineList.forEach((e, i) => {
@@ -48,7 +51,10 @@ window.onload = function() {
       });
       $mineLength.innerHTML = arrayCount(flagList, 1);
       finishTest();
-      firstClick = false;
+      if(firstClick === true) {
+        setTimer();
+        firstClick = false;
+      }
     }
   })
 
@@ -228,13 +234,14 @@ window.onload = function() {
     warningList = new Array();
     mineList = new Array();
     flagList = new Array();
+    finish = false;
     if(lineCount > 30) {
       lineCount = 30;
       $lineCount.value = 30;
     }
-    if(difficulty > 5) {
-      difficulty = 5;
-      $difficulty.value = 5;
+    if(difficulty > 10) {
+      difficulty = 10;
+      $difficulty.value = 10;
     }
     let line = `<li><ul class="line">`;
     for(let i = 0; i < lineCount; i++) {
@@ -278,7 +285,7 @@ window.onload = function() {
       timer++;
       $playTime.innerHTML = `${fillZero(Math.floor(timer / 60), 2)} : ${fillZero(timer % 60, 2)}`;
     },1000)
-  };
+  };https://rsj2003.github.io/Minesweeper/
 
   
   function fillZero(n, width) {
