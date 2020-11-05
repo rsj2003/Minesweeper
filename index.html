@@ -6,15 +6,19 @@
   <link rel="stylesheet" href="./src/css/style.css">
 </head>
 <body>
+  <input type="checkbox" name="toggleFlag" id="toggleFlag">
+  <input type="checkbox" name="toggleMenu" id="toggleMenu">
   <div id="gamePlace">
     <ul id="game">
     </ul>
-    <div id="playTime">00 : 00</div>
-    <div id="mineCount">지뢰 : <span id="count">0</span>개<span class="mineIcon"></span> : <span id="mineLength">0</span>개</div>
     <div id="input">
+      <div id="playTime">00 : 00</div>
+      <div id="mineCount">지뢰 : <span id="count">0</span>개<span class="mineIcon"></span> : <span id="mineLength">0</span>개</div>
       <input type="number" value="5" placeholder="줄 갯수" id="lineCount" name="lineCount" min="5" max="30">
       <input type="number" value="1" placeholder="난이도" id="difficulty" name="difficulty" min="1" max="10">
       <input type="button" value="다시시작" id="reset" name="reset">
+      <label for="toggleFlag" id="toggleFlagButton"></label>
+      <label for="toggleMenu" id="toggleMenuButton"><span class="menuDown">&dtrif;</span><span class="menuUp">&utrif;</span></label>
     </div>
   </div>
   <script src="src/js/script.js"></script>

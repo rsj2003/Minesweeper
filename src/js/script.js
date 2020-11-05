@@ -6,6 +6,7 @@ window.onload = function() {
   const $count = document.getElementById("count");
   const $mineLength = document.getElementById("mineLength");
   const $playTime = document.getElementById("playTime");
+  const $toggleFlag = document.getElementById("toggleFlag");
   let $li = document.querySelectorAll(".line>li");
   let difficulty = 1;
   let lineCount = 5;
@@ -63,18 +64,30 @@ window.onload = function() {
       l.addEventListener("mousedown", e => {
         if(finish) return false;
         if(e.button === 0) {
-          if(flagList[i] === 1) return false;
-          if(firstClick === true) {
-            moveMine(i)
-            firstClick = false;
-            setTimer();
-          };
-          if(mineList[i] === 1) {
-            if(confirm("다시 시작하시겠습니까?") === true) return reset();
-            clearInterval(timerInterval);
-            $playTime.classList.add("fail");
-          };
-          deleteHidden(i);
+          if(!$toggleFlag.checked){
+            if(flagList[i] === 1) return false;
+            if(firstClick === true) {
+              moveMine(i)
+              firstClick = false;
+              setTimer();
+            };
+            if(mineList[i] === 1) {
+              if(confirm("다시 시작하시겠습니까?") === true) return reset();
+              clearInterval(timerInterval);
+              $playTime.classList.add("fail");
+            };
+            deleteHidden(i);
+          }else {
+            if(hasClass(e.target, "hidden")) {
+              e.target.classList.toggle("flag");
+              if(hasClass(e.target, "flag")) {
+                flagList[i] = 1;
+              }else {
+                flagList[i] = 0;
+              }
+            }
+            $mineLength.innerHTML = arrayCount(flagList, 1);
+          }
         }
         if(e.button === 2) {
           if(hasClass(e.target, "hidden")) {

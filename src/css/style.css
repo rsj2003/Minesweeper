@@ -1,7 +1,7 @@
 *{margin: 0; padding: 0;}
 li{list-style: none;}
 
-#gamePlace{width: 80vw; height: 80vh; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+#gamePlace{width: 100%; height: 100%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); overflow-y: hidden;}
 #game{position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%);}
 .line{height: 31px;}
 .line>li{width: 30px; height: 30px; background: #bbb; float: left; border-right: 1px solid #777; border-bottom: 1px solid #777; position: relative; cursor: pointer; text-align: center; line-height: 30px; user-select: none;}
@@ -19,12 +19,27 @@ li{list-style: none;}
 .line>li.flag:hover>.before{background: #f55; border-color: #eee;}
 /* .line>li:active>.before{display: none;} */
 
-#playTime{position: absolute; left: 50%; top: 90%; transform: translate(-50%, -200%);}
+#playTime{position: absolute; left: 0; top: -40%; width: 100%; text-align: center;}
 #playTime.fail{color: #f33;}
 
-#mineCount{position: absolute; left: 50%; top: 90%; transform: translate(-50%, -50%);}
+#mineCount{position: absolute; left: 0; top: 10%; width: 100%; text-align: center;}
 .mineIcon{width: 20px; height: 20px; margin-left: 40px; display: inline-block; background: #f33; transform: translateY(5px);}
 
-#input{position: absolute; left: 50%; top: 95%; transform: translate(-50%, -50%);}
-input{width: 60px; height: 20px; border: 1px solid #777; box-sizing: content-box; padding: 5px; border-radius: 3px;}
+#input{position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); background: #ccc; padding: 60px 50px 40px; border-left: 2px solid #777; border-right: 2px solid #777;}
+input{width: 80px; height: 20px; border: 1px solid #777; box-sizing: content-box; padding: 5px; border-radius: 3px;}
 #reset{cursor: pointer;}
+#input .menuDown{display: block;}
+#input .menuUp{display: none;}
+
+#toggleMenu:checked ~ #gamePlace #input{bottom: -125px;}
+#toggleMenu:checked ~ #gamePlace #input .menuDown{display: none;}
+#toggleMenu:checked ~ #gamePlace #input .menuUp{display: block;}
+#toggleMenu:checked ~ #gamePlace #playTime{pointer-events: none;}
+
+input[type="checkbox"]{display:none;}
+#toggleFlagButton{position: absolute; width: 34px; height: 34px; background: #eee; border-radius: 8px; border: 2px solid #555; right: 5px; top: 5px; cursor: pointer;}
+#toggleFlagButton::before{content: ""; display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: #f33;}
+#toggleMenuButton{position: absolute; width: 100%; height: 20px; bottom: 100%; left: -2px; border-radius: 20px 20px 0 0; border: 2px solid #555; border-bottom: 0; background: #888; font-size: 30px; line-height: 16px; text-align: center; color: #fff; cursor: pointer;}
+
+#toggleFlag:checked ~ #gamePlace #toggleFlagButton{background: #aaa; box-shadow: inset 0 0 3px #222;}
+#toggleFlag:checked ~ #gamePlace #toggleFlagButton:before{background: #d00;}
