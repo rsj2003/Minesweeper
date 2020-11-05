@@ -5,7 +5,7 @@ li{list-style: none;}
 #game{position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%);}
 .line{height: 31px;}
 .line>li{width: 30px; height: 30px; background: #bbb; float: left; border-right: 1px solid #777; border-bottom: 1px solid #777; position: relative; cursor: pointer; text-align: center; line-height: 30px; user-select: none;}
-.line>li>.warningNumber{display: block; position: absolute; width: 30px; height: 30px; left: 0; top: 0; pointer-events: none;}
+.line>li>.warningCount{display: block; position: absolute; width: 30px; height: 30px; left: 0; top: 0; pointer-events: none;}
 .line>li.hidden>.before{display: block; position: absolute; width: 20px; height: 20px; border: 5px outset #ddd; background: #bbb; left: 0; top: 0; z-index: 5; pointer-events: none;}
 .line>li>.after{display: block; position: absolute; width: 30px; height: 30px; background: #fff7; left: 0; top: 0; z-index: 5; opacity: 0; transition: 0.5s; pointer-events: none;}
 .line>li.highlight>.after{opacity: 1; transition: none;}

@@ -6,13 +6,16 @@ window.onload = function() {
   const $count = document.getElementById("count");
   const $mineLength = document.getElementById("mineLength");
   const $playTime = document.getElementById("playTime");
-  let $mine;
   let $li = document.querySelectorAll(".line>li");
   let difficulty = 1;
   let lineCount = 5;
   let firstClick = true;
   let timer = 0;
   let timerInterval;
+  let warningList = new Array();
+  let mineList = new Array();
+  let flagList = new Array();
+  finish = false;
   reset();
 
   document.addEventListener("contextmenu", e => {
@@ -23,10 +26,30 @@ window.onload = function() {
   $reset.addEventListener("click", reset);
 
   document.addEventListener("keydown", e => {
-    if(e.key === "Enter") {
-      $li.forEach(i => {
-        if(!hasClass(i, "mine")) i.classList.remove("hidden");
+    console.log(e.key);
+    if(e.key === "h") {
+      $li.forEach((e, i) => {
+        if(mineList[i] === 0) {
+          if(warningList[i] > 0) e.querySelector(".warningCount").innerHTML = warningList[i];
+          flagList[i] = 0;
+          $li[i].classList.remove("flag");
+          e.classList.remove("hidden");
+        }
       })
+      $mineLength.innerHTML = arrayCount(flagList, 1);
+      finishTest();
+      firstClick = false;
+    }
+    if(e.key === "m") {
+      mineList.forEach((e, i) => {
+        if(e === 1) {
+          flagList[i] = 1;
+          $li[i].classList.add("flag");
+        }
+      });
+      console.log(mineList, flagList);
+      $mineLength.innerHTML = arrayCount(flagList, 1);
+      finishTest();
       firstClick = false;
     }
   })
@@ -35,14 +58,15 @@ window.onload = function() {
     $li.forEach((l,i) => {
       // l.classList.add("hidden");
       l.addEventListener("mousedown", e => {
+        if(finish) return false;
         if(e.button === 0) {
-          if(hasClass(e.target, "flag")) return false;
+          if(flagList[i] === 1) return false;
           if(firstClick === true) {
             moveMine(i)
             firstClick = false;
             setTimer();
           };
-          if(hasClass(e.target, "mine")) {
+          if(mineList[i] === 1) {
             if(confirm("다시 시작하시겠습니까?") === true) return reset();
             clearInterval(timerInterval);
             $playTime.classList.add("fail");
@@ -50,9 +74,17 @@ window.onload = function() {
           deleteHidden(i);
         }
         if(e.button === 2) {
-          if(hasClass(e.target, "hidden")) e.target.classList.toggle("flag");
-          $mineLength.innerHTML = document.querySelectorAll(".flag").length;
+          if(hasClass(e.target, "hidden")) {
+            e.target.classList.toggle("flag");
+            if(hasClass(e.target, "flag")) {
+              flagList[i] = 1;
+            }else {
+              flagList[i] = 0;
+            }
+          }
+          $mineLength.innerHTML = arrayCount(flagList, 1);
         }
+        console.log("test");
         finishTest();
       })
       l.addEventListener("dblclick", e => {
@@ -73,24 +105,28 @@ window.onload = function() {
     }); 
     for(let i = 0; i < ($li.length / (15 - difficulty)) + difficulty; i++) {
       let idx = Math.floor(Math.random() * $li.length);
-      if(!hasClass($li[idx], "mine")){
-        $li[idx].classList.add("mine");
+      if(mineList[idx] === 0){
+        mineList[idx] = 1;
         pushWarning(idx);
       }else {
         i--;
       };
     };
-    $mine = document.querySelectorAll(".mine");
-    $count.innerHTML = $mine.length;
+    $count.innerHTML = arrayCount(mineList, 1);
     firstClick = true;
   };
   
   function deleteHidden(i) {
     if(i < 0 || i >= lineCount * lineCount) return false;
-    if(!hasClass($li[i], "hidden") || hasClass($li[i], "mine")) return false;
+    if(!hasClass($li[i], "hidden") || mineList[i] === 1) return false;
     $li[i].classList.remove("flag");
+    flagList[i] = 0;
     $li[i].classList.remove("hidden");
-    if(hasClass($li[i], "warning")) return false;
+    $mineLength.innerHTML = arrayCount(flagList, 1);
+    if(warningList[i] > 0) {
+      $li[i].querySelector(".warningCount").innerHTML = `${warningList[i]}`;
+      return false;
+    }
     if((i + 1) % lineCount !== 0) {
       deleteHidden(i - lineCount + 1);
       deleteHidden(i + 1);
@@ -154,14 +190,15 @@ window.onload = function() {
     }
     around.forEach(l => {
       if(l >= 0 && l < lineCount * lineCount) {
-        if(hasClass($li[l], "mine")) {
-          $li[l].classList.remove("mine");  
+        if(mineList[l] === 1) {
+          mineList[l] = 0;
+          console.log(mineList[l]);
           splitWarning(l);
           let clear = true;
           while(clear) {
-            let idx = Math.floor(Math.random() * $li.length);
-            if(around.indexOf(idx) === -1 && !hasClass($li[idx], "mine")){
-              $li[idx].classList.add("mine");
+            let idx = Math.floor(Math.random() * mineList.length);
+            if(around.indexOf(idx) === -1 && mineList[idx] === 0){
+              mineList[idx] = 1;
               pushWarning(idx);
               clear = false;
             }
@@ -173,24 +210,12 @@ window.onload = function() {
 
   function setWarning(i) {
     if(i < 0 || i >= lineCount * lineCount) return false;
-    if(!hasClass($li[i], "warning")) {
-      $li[i].classList.add("warning");
-      $li[i].querySelector(".warningNumber").innerHTML = "1";
-    }else {
-      $li[i].querySelector(".warningNumber").innerHTML = Number($li[i].querySelector(".warningNumber").innerHTML) + 1;
-    }
-    if(hasClass($li[i], "mine")) $li[i].classList.add("warning");
+    warningList[i]++;
   }
 
   function removeWarning(i) {
     if(i < 0 || i >= lineCount * lineCount) return false;
-    let mineCount = Number($li[i].querySelector(".warningNumber").innerHTML) - 1;
-    if(mineCount === 0) {
-      $li[i].classList.remove("warning");
-      $li[i].querySelector(".warningNumber").innerHTML = "";
-      return;
-    };
-    $li[i].querySelector(".warningNumber").innerHTML = mineCount;
+    warningList[i]--;
   }
 
   function liDblclick(i) {
@@ -205,6 +230,9 @@ window.onload = function() {
     let html = "";
     lineCount = Number($lineCount.value);
     difficulty = Number($difficulty.value);
+    warningList = new Array();
+    mineList = new Array();
+    flagList = new Array();
     if(lineCount > 30) {
       lineCount = 30;
       $lineCount.value = 30;
@@ -215,12 +243,17 @@ window.onload = function() {
     }
     let line = `<li><ul class="line">`;
     for(let i = 0; i < lineCount; i++) {
-      line += `<li class="hidden"><span class="warningNumber"></span><span class="before"></span><span class="after"></span></li>`;
+      line += `<li class="hidden"><span class="warningCount"></span><span class="before"></span><span class="after"></span></li>`;
     };
     line += `</ul></li>`;
     for(let i = 0; i < lineCount; i++) {
       html += line;
     };
+    for(let i = 0; i < lineCount * lineCount; i++) {
+      warningList.push(0);
+      mineList.push(0);
+      flagList.push(0);
+    }
     $game.innerHTML = html;
     $li = document.querySelectorAll(".line>li");
     $mineLength.innerHTML = "0";
@@ -233,11 +266,11 @@ window.onload = function() {
   }
 
   function finishTest() {
-    let finish = true;
-    $li.forEach(i => {
-      if(hasClass(i, "mine") && !hasClass(i, "flag")) return finish = false;
-      if(!hasClass(i, "mine") && hasClass(i, "hidden")) return finish = false;
-    })
+    finish = true;
+    for(let i = 0; i < mineList.length; i++) {
+      if(mineList[i] !== flagList[i]) return finish = false;
+      if(mineList[i] === 0 && hasClass($li[i], "hidden")) return finish = false;
+    }
     if(finish) {
       clearInterval(timerInterval);
       alert("성공");
@@ -261,4 +294,12 @@ window.onload = function() {
   function hasClass(element, className) {
     return element.classList.contains(className);
   };
+
+  function arrayCount(arr, str) {
+    let idx = 0;
+    for(let i = 0; i < arr.length; i++) {
+      if(arr[i] === str) idx++;
+    }
+    return idx;
+  }
 };
