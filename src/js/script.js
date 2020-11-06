@@ -271,6 +271,14 @@ window.onload = function() {
       difficulty = 10;
       $difficulty.value = 10;
     };
+    if(lineCount < 5) {
+      lineCount = 5;
+      $lineCount.value = 5;
+    };
+    if(difficulty < 1) {
+      difficulty = 1;
+      $difficulty.value = 1;
+    };
     let line = `<li><ul class="line">`;
     for(let i = 0; i < lineCount; i++) {
       line += `<li class="hidden"><span class="warningCount"></span><span class="before"></span><span class="after"></span></li>`;
